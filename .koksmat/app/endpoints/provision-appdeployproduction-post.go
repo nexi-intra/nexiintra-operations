@@ -11,9 +11,8 @@ package endpoints
 import (
 	"context"
 
+	"github.com/nexiintra/nexiintra-operations/execution"
 	"github.com/swaggest/usecase"
-
-	"github.com/magicbutton/magic-people/execution"
 )
 
 func ProvisionAppdeployproductionPost() usecase.Interactor {
@@ -21,7 +20,7 @@ func ProvisionAppdeployproductionPost() usecase.Interactor {
 	}
 	u := usecase.NewInteractor(func(ctx context.Context, input Request, output *string) error {
 
-		_, err := execution.ExecutePowerShell("john", "*", "magic-people", "60-provision", "10-app-service.ps1", "")
+		_, err := execution.ExecutePowerShell("john", "*", "nexiintra-operations", "60-provision", "10-app-service.ps1", "")
 		if err != nil {
 			return err
 		}

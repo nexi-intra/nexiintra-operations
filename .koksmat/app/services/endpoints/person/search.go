@@ -9,17 +9,17 @@ keep: false
 package person
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/personmodel"
-    . "github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/personmodel"
+	. "github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func PersonSearch(query string) (*Page[personmodel.Person], error) {
-    log.Println("Calling Personsearch")
+	log.Println("Calling Personsearch")
 
-    return applogic.Search[database.Person, personmodel.Person]("searchindex", query, applogic.MapPersonOutgoing)
+	return applogic.Search[database.Person, personmodel.Person]("searchindex", query, applogic.MapPersonOutgoing)
 
 }

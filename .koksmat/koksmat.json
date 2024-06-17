@@ -8,6 +8,6 @@
   "appname": "magic-people",
   "dnsprod": "people.intra.nexigroup.com",
   "dnstest": "people-test.intra.nexigroup.com",
-  "imagename": "ghcr.io/magicbutton/magic-people",
+  "imagename": "ghcr.io/nexiintra-operations",
   "port": 4444
 }

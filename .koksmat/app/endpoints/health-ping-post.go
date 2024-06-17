@@ -11,9 +11,8 @@ package endpoints
 import (
 	"context"
 
+	"github.com/nexiintra/nexiintra-operations/execution"
 	"github.com/swaggest/usecase"
-
-	"github.com/magicbutton/magic-people/execution"
 )
 
 func HealthPingPost() usecase.Interactor {
@@ -22,7 +21,7 @@ func HealthPingPost() usecase.Interactor {
 	}
 	u := usecase.NewInteractor(func(ctx context.Context, input Request, output *string) error {
 
-		_, err := execution.ExecutePowerShell("john", "*", "magic-people", "00-health", "10-ping.ps1", "", "-pong", input.Pong)
+		_, err := execution.ExecutePowerShell("john", "*", "nexiintra-operations", "80-health", "10-ping.ps1", "", "-pong", input.Pong)
 		if err != nil {
 			return err
 		}

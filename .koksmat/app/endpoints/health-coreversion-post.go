@@ -11,9 +11,8 @@ package endpoints
 import (
 	"context"
 
+	"github.com/nexiintra/nexiintra-operations/execution"
 	"github.com/swaggest/usecase"
-
-	"github.com/magicbutton/magic-people/execution"
 )
 
 func HealthCoreversionPost() usecase.Interactor {
@@ -21,7 +20,7 @@ func HealthCoreversionPost() usecase.Interactor {
 	}
 	u := usecase.NewInteractor(func(ctx context.Context, input Request, output *string) error {
 
-		_, err := execution.ExecutePowerShell("john", "*", "magic-people", "00-health", "20-coreversion.ps1", "")
+		_, err := execution.ExecutePowerShell("john", "*", "nexiintra-operations", "80-health", "20-coreversion.ps1", "")
 		if err != nil {
 			return err
 		}

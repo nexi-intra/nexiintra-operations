@@ -11,17 +11,17 @@ package endpoints
 import (
 	"context"
 
+	"github.com/nexiintra/nexiintra-operations/execution"
 	"github.com/swaggest/usecase"
-
-	"github.com/magicbutton/magic-people/execution"
 )
 
 func ProvisionWebdeployproductionPost() usecase.Interactor {
 	type Request struct {
+		Appname string `query:"appName" binding:"required"`
 	}
 	u := usecase.NewInteractor(func(ctx context.Context, input Request, output *string) error {
 
-		_, err := execution.ExecutePowerShell("john", "*", "magic-people", "60-provision", "10-web.ps1", "")
+		_, err := execution.ExecutePowerShell("john", "*", "nexiintra-operations", "60-provision", "10-web.ps1", "", "-appName", input.Appname)
 		if err != nil {
 			return err
 		}

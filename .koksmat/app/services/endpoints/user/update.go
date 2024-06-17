@@ -9,17 +9,16 @@ keep: false
 package user
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/usermodel"
-
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/usermodel"
 )
 
 func UserUpdate(item usermodel.User) (*usermodel.User, error) {
-    log.Println("Calling Userupdate")
+	log.Println("Calling Userupdate")
 
-    return applogic.Update[database.User, usermodel.User](item.ID,item, applogic.MapUserIncoming, applogic.MapUserOutgoing)
+	return applogic.Update[database.User, usermodel.User](item.ID, item, applogic.MapUserIncoming, applogic.MapUserOutgoing)
 
 }

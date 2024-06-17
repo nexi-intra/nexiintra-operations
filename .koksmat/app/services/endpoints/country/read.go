@@ -9,18 +9,18 @@ keep: false
 package country
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/countrymodel"
+	"log"
+	"strconv"
 
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/countrymodel"
 )
 
 func CountryRead(arg0 string) (*countrymodel.Country, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Countryread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Countryread")
 
-    return applogic.Read[database.Country, countrymodel.Country](id, applogic.MapCountryOutgoing)
+	return applogic.Read[database.Country, countrymodel.Country](id, applogic.MapCountryOutgoing)
 
 }

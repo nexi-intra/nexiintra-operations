@@ -1,4 +1,4 @@
-module github.com/magicbutton/magic-people
+module github.com/nexiintra/nexiintra-operations
 
 go 1.21
 

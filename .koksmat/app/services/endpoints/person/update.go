@@ -9,17 +9,16 @@ keep: false
 package person
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/personmodel"
-
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/personmodel"
 )
 
 func PersonUpdate(item personmodel.Person) (*personmodel.Person, error) {
-    log.Println("Calling Personupdate")
+	log.Println("Calling Personupdate")
 
-    return applogic.Update[database.Person, personmodel.Person](item.ID,item, applogic.MapPersonIncoming, applogic.MapPersonOutgoing)
+	return applogic.Update[database.Person, personmodel.Person](item.ID, item, applogic.MapPersonIncoming, applogic.MapPersonOutgoing)
 
 }

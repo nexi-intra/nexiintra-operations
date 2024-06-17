@@ -11,13 +11,13 @@ package cmds
 import (
 	"context"
 
-	"github.com/magicbutton/magic-people/execution"
-	"github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/execution"
+	"github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func HealthPingPost(ctx context.Context, args []string) (*string, error) {
 
-	result, pwsherr := execution.ExecutePowerShell("john", "*", "magic-people", "00-health", "10-ping.ps1", "", "-pong", args[0])
+	result, pwsherr := execution.ExecutePowerShell("john", "*", "nexiintra-operations", "80-health", "10-ping.ps1", "", "-pong", args[0])
 	if pwsherr != nil {
 		return nil, pwsherr
 	}

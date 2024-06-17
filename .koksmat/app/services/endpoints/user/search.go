@@ -9,17 +9,17 @@ keep: false
 package user
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/usermodel"
-    . "github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/usermodel"
+	. "github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func UserSearch(query string) (*Page[usermodel.User], error) {
-    log.Println("Calling Usersearch")
+	log.Println("Calling Usersearch")
 
-    return applogic.Search[database.User, usermodel.User]("searchindex", query, applogic.MapUserOutgoing)
+	return applogic.Search[database.User, usermodel.User]("searchindex", query, applogic.MapUserOutgoing)
 
 }

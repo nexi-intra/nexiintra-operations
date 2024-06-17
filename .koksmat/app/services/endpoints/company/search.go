@@ -9,17 +9,17 @@ keep: false
 package company
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/companymodel"
-    . "github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/companymodel"
+	. "github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func CompanySearch(query string) (*Page[companymodel.Company], error) {
-    log.Println("Calling Companysearch")
+	log.Println("Calling Companysearch")
 
-    return applogic.Search[database.Company, companymodel.Company]("searchindex", query, applogic.MapCompanyOutgoing)
+	return applogic.Search[database.Company, companymodel.Company]("searchindex", query, applogic.MapCompanyOutgoing)
 
 }

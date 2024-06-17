@@ -3,7 +3,7 @@ package magicapp
 import (
 	"os"
 
-	"github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func Execute(use string, short string, long string) {

@@ -16,9 +16,9 @@ import (
 
 	"github.com/swaggest/usecase"
 
-	"github.com/magicbutton/magic-people/execution"
-	"github.com/magicbutton/magic-people/schemas"
-	"github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/execution"
+	"github.com/nexiintra/nexiintra-operations/schemas"
+	"github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func UsecasesGetSegmentsPost() usecase.Interactor {

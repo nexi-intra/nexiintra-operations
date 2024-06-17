@@ -13,8 +13,8 @@ import (
 	"os"
 	"path"
 
-	"github.com/magicbutton/magic-people/execution"
-	"github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/execution"
+	"github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func AnalyseParseUsersPost(ctx context.Context, body []byte, args []string) (*string, error) {

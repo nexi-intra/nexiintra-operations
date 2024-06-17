@@ -1,10 +1,9 @@
 package magicapp
 
 import (
+	"github.com/nexiintra/nexiintra-operations/cmds"
+	"github.com/nexiintra/nexiintra-operations/utils"
 	"github.com/spf13/cobra"
-
-	"github.com/magicbutton/magic-people/cmds"
-	"github.com/magicbutton/magic-people/utils"
 )
 
 func RegisterCmds() {
@@ -13,7 +12,7 @@ func RegisterCmds() {
 	healthCmd := &cobra.Command{
 		Use:   "health",
 		Short: "Health",
-		Long:  `Describe the main purpose of this kitchen`,
+		Long:  `This architecture ensures that frontend developers focus solely on building the user interface and client-side logic, without direct access to production data. Backend developers manage data processing and API creation, maintaining strict access controls through the MagicPot. The use of GitHub Actions for continuous integration and deployment automates the process of building and publishing Docker images, while the PowerShell script facilitates seamless deployment to Kubernetes.`,
 	}
 	HealthPingPostCmd := &cobra.Command{
 		Use:   "ping  pong",
@@ -44,7 +43,7 @@ func RegisterCmds() {
 	provisionCmd := &cobra.Command{
 		Use:   "provision",
 		Short: "Provision",
-		Long:  `Describe the main purpose of this kitchen`,
+		Long:  `This architecture ensures that frontend developers focus solely on building the user interface and client-side logic, without direct access to production data. Backend developers manage data processing and API creation, maintaining strict access controls through the MagicPot. The use of GitHub Actions for continuous integration and deployment automates the process of building and publishing Docker images, while the PowerShell script facilitates seamless deployment to Kubernetes.`,
 	}
 	ProvisionAppdeployproductionPostCmd := &cobra.Command{
 		Use:   "appdeployproduction ",
@@ -59,10 +58,10 @@ func RegisterCmds() {
 	}
 	provisionCmd.AddCommand(ProvisionAppdeployproductionPostCmd)
 	ProvisionWebdeployproductionPostCmd := &cobra.Command{
-		Use:   "webdeployproduction ",
+		Use:   "webdeployproduction  appName",
 		Short: "Web deploy to production",
 		Long:  ``,
-		Args:  cobra.MinimumNArgs(0),
+		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			ctx := cmd.Context()
 
@@ -84,4 +83,6 @@ func RegisterCmds() {
 	provisionCmd.AddCommand(ProvisionWebdeploytestPostCmd)
 
 	utils.RootCmd.AddCommand(provisionCmd)
+
+	utils.RootCmd.AddCommand(healthCmd)
 }

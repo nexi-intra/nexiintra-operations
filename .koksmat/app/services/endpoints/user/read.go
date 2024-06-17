@@ -9,18 +9,18 @@ keep: false
 package user
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/usermodel"
+	"log"
+	"strconv"
 
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/usermodel"
 )
 
 func UserRead(arg0 string) (*usermodel.User, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Userread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Userread")
 
-    return applogic.Read[database.User, usermodel.User](id, applogic.MapUserOutgoing)
+	return applogic.Read[database.User, usermodel.User](id, applogic.MapUserOutgoing)
 
 }

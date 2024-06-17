@@ -9,17 +9,16 @@ keep: false
 package relation
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/relationmodel"
-
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/relationmodel"
 )
 
 func RelationUpdate(item relationmodel.Relation) (*relationmodel.Relation, error) {
-    log.Println("Calling Relationupdate")
+	log.Println("Calling Relationupdate")
 
-    return applogic.Update[database.Relation, relationmodel.Relation](item.ID,item, applogic.MapRelationIncoming, applogic.MapRelationOutgoing)
+	return applogic.Update[database.Relation, relationmodel.Relation](item.ID, item, applogic.MapRelationIncoming, applogic.MapRelationOutgoing)
 
 }

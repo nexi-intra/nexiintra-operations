@@ -9,17 +9,17 @@ keep: false
 package country
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/countrymodel"
-    . "github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/countrymodel"
+	. "github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func CountrySearch(query string) (*Page[countrymodel.Country], error) {
-    log.Println("Calling Countrysearch")
+	log.Println("Calling Countrysearch")
 
-    return applogic.Search[database.Country, countrymodel.Country]("searchindex", query, applogic.MapCountryOutgoing)
+	return applogic.Search[database.Country, countrymodel.Country]("searchindex", query, applogic.MapCountryOutgoing)
 
 }

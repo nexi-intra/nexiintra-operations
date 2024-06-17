@@ -3,7 +3,7 @@ package magicapp
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func RegisterServiceCmd() {

@@ -9,17 +9,16 @@ keep: false
 package group
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/groupmodel"
-
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/groupmodel"
 )
 
 func GroupUpdate(item groupmodel.Group) (*groupmodel.Group, error) {
-    log.Println("Calling Groupupdate")
+	log.Println("Calling Groupupdate")
 
-    return applogic.Update[database.Group, groupmodel.Group](item.ID,item, applogic.MapGroupIncoming, applogic.MapGroupOutgoing)
+	return applogic.Update[database.Group, groupmodel.Group](item.ID, item, applogic.MapGroupIncoming, applogic.MapGroupOutgoing)
 
 }

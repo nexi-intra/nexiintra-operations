@@ -11,13 +11,13 @@ package cmds
 import (
 	"context"
 
-	"github.com/magicbutton/magic-people/execution"
-	"github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/execution"
+	"github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func ProvisionWebdeployproductionPost(ctx context.Context, args []string) (*string, error) {
 
-	result, pwsherr := execution.ExecutePowerShell("john", "*", "magic-people", "60-provision", "10-web.ps1", "")
+	result, pwsherr := execution.ExecutePowerShell("john", "*", "nexiintra-operations", "60-provision", "10-web.ps1", "", "-appName", args[0])
 	if pwsherr != nil {
 		return nil, pwsherr
 	}

@@ -9,17 +9,16 @@ keep: false
 package group
 
 import (
-    "log"
-   
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/groupmodel"
+	"log"
 
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/groupmodel"
 )
 
 func GroupCreate(item groupmodel.Group) (*groupmodel.Group, error) {
-    log.Println("Calling Groupcreate")
+	log.Println("Calling Groupcreate")
 
-    return applogic.Create[database.Group, groupmodel.Group](item, applogic.MapGroupIncoming, applogic.MapGroupOutgoing)
+	return applogic.Create[database.Group, groupmodel.Group](item, applogic.MapGroupIncoming, applogic.MapGroupOutgoing)
 
 }

@@ -9,17 +9,16 @@ keep: false
 package country
 
 import (
-    "log"
-   
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/countrymodel"
+	"log"
 
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/countrymodel"
 )
 
 func CountryCreate(item countrymodel.Country) (*countrymodel.Country, error) {
-    log.Println("Calling Countrycreate")
+	log.Println("Calling Countrycreate")
 
-    return applogic.Create[database.Country, countrymodel.Country](item, applogic.MapCountryIncoming, applogic.MapCountryOutgoing)
+	return applogic.Create[database.Country, countrymodel.Country](item, applogic.MapCountryIncoming, applogic.MapCountryOutgoing)
 
 }

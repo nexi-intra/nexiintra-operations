@@ -9,17 +9,17 @@ keep: false
 package group
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-people/applogic"
-    "github.com/magicbutton/magic-people/database"
-    "github.com/magicbutton/magic-people/services/models/groupmodel"
-    . "github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/applogic"
+	"github.com/nexiintra/nexiintra-operations/database"
+	"github.com/nexiintra/nexiintra-operations/services/models/groupmodel"
+	. "github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func GroupSearch(query string) (*Page[groupmodel.Group], error) {
-    log.Println("Calling Groupsearch")
+	log.Println("Calling Groupsearch")
 
-    return applogic.Search[database.Group, groupmodel.Group]("searchindex", query, applogic.MapGroupOutgoing)
+	return applogic.Search[database.Group, groupmodel.Group]("searchindex", query, applogic.MapGroupOutgoing)
 
 }

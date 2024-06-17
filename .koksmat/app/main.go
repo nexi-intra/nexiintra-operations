@@ -4,8 +4,8 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/magicbutton/magic-people/magicapp"
-	"github.com/magicbutton/magic-people/utils"
+	"github.com/nexiintra/nexiintra-operations/magicapp"
+	"github.com/nexiintra/nexiintra-operations/utils"
 )
 
 func main() {
