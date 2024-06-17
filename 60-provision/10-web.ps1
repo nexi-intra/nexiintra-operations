@@ -5,6 +5,10 @@ api: post
 ---
 
 #>
+
+param (
+  [string]$appName = "intranet-insights"
+)
 if ((Split-Path -Leaf (Split-Path  -Parent -Path $PSScriptRoot)) -eq "sessions") {
   $path = join-path $PSScriptRoot ".." ".."
 }
@@ -15,7 +19,7 @@ else {
 
 $koksmatDir = Resolve-Path $path
 
-$inputFile = join-path  $koksmatDir "koksmat.json"
+$inputFile = join-path  $koksmatDir "manifests" $appName "koksmat.json"
 
 if (!(Test-Path -Path $inputFile) ) {
   Throw "Cannot find file at expected path: $inputFile"

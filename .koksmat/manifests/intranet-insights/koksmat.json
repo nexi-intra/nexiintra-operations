@@ -1,0 +1,13 @@
+{
+  "version": {
+    "minor": 0,
+    "build": 5,
+    "patch": 5,
+    "major": 0
+  },
+  "appname": "intranet-insights",
+  "dnsprod": "insights.intra.nexigroup.com",
+  "dnstest": "insights-test.intra.nexigroup.com",
+  "imagename": "ghcr.io/nexi-intra/intranet-insights",
+  "port": 4444
+}
