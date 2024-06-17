@@ -1,257 +1,119 @@
 ---
-title: Template for a Magic App
-description: This architecture ensures that frontend developers focus solely on building the user interface and client-side logic, without direct access to production data. Backend developers manage data processing and API creation, maintaining strict access controls through the MagicPot. The use of GitHub Actions for continuous integration and deployment automates the process of building and publishing Docker images, while the PowerShell script facilitates seamless deployment to Kubernetes.
+title: Nexiintra Operations
+description: This repository is designed to support a GitOps configuration, where each service's manifest resides in the repo. GitOps is a modern approach to continuous deployment, using Git as a single source of truth for declarative infrastructure and application configurations.
 ---
 
-### Architecture Overview
+### Project Structure Overview
 
-The architecture of the KOKSMAT framework ensures a clear separation between frontend and backend developers, with specific roles and access levels.
+The repository contains various folders and files essential for operating the MagicBox in Nexi Group:
 
-#### Frontend (Next.js Application)
+- **.devcontainer**: Configuration files for development containers.
+- **.github/workflows**: GitHub Actions workflows for CI/CD.
+- **.vscode**: Visual Studio Code settings.
+- **00-health, 10-setup, 60-provision, 80-health, 85-Manifests, 90-setup**: Directories with PowerShell scripts (.ps1) for different operational tasks.
 
-- **Technologies Used**: Next.js 14, TypeScript, Tailwind CSS, shadcn-ui components
-- **Location**: `.koksmat/web`
-- **Responsibilities**:
-  - Developing user interfaces and client-side logic
-  - Handling user authentication via Microsoft Online
-  - Consuming backend APIs (MagicPot) for all data interactions
-  - Never interacting directly with production data
+### Focus on PowerShell Scripts
 
-#### Backend (Go Application)
+#### Key PowerShell Scripts:
 
-- **Technologies Used**: Go, Postgres, Kubernetes
-- **Location**: `.koksmat/app`
-- **Responsibilities**:
-  - Building and managing APIs using the API builder developed for NDA staff
-  - Handling business logic, data processing, and storage
-  - Issuing JWT tokens for secure API access
-  - Ensuring data integrity and security
+- **10-setup/10-web.ps1**: This script sets up the web environment, including configurations and dependencies.
+- **60-provision/10-web.ps1**: This script handles the deployment to Kubernetes.
 
-### MagicPot - The Central API
+#### Deep Dive into `60-provision/10-web.ps1`
 
-The MagicPot serves as the single entry point for all backend interactions, with strict access control:
+The `60-provision/10-web.ps1` script is designed to deploy the web application to a Kubernetes cluster. Here are the key steps it performs:
 
-- **Anonymous Endpoint**:
-  - **Purpose**: Issue access tokens
-  - **Authentication**: Uses Microsoft Online to issue JWT tokens, valid for 10 minutes
+1. **Path Setup**: Determines the correct path to the `koksmat.json` configuration file.
+2. **Configuration Loading**: Loads and parses `koksmat.json` to extract version, port, app name, image name, and DNS name.
+3. **Kubernetes Manifest Generation**: Constructs a Kubernetes manifest for PersistentVolumeClaim, Deployment, Service, and Ingress based on the loaded configuration.
+4. **Deployment**: Applies the generated Kubernetes manifest using `kubectl`.
 
-### Getting Started with a New Project
+### Summary of the `koksmat.json` File
 
-To start a new project using the KOKSMAT framework, follow these steps:
+- **version**: Application version details.
+- **appname**: Name of the application.
+- **dnsprod**: Production DNS name.
+- **imagename**: Docker image name.
+- **port**: Application port.
 
-1. **Decide on a Project Name**: Choose a subject matter for the project, formatted as two words separated by a dash (e.g., `intranet-tools`).
+### Example Configuration from `60-provision/10-web.ps1`
 
-2. **Create a New Repository**:
-
-   - Use the master template repository: [magic-master](https://github.com/magicbutton/magic-master)
-   - Name the new repository according to the project subject (e.g., `intranet-tools`).
-
-3. **Set Up the Repository**:
-
-   - Clone the new repository to your local machine or open it in GitHub Codespaces.
-   - Rename the project folder to match the subject (e.g., `tools`).
-
-4. **Update Configuration**:
-   - Open `.koksmat/web/app/global.ts`.
-   - Update the `APPNAME` variable to match your project name (e.g., `tools`).
-   - Change the `clientId` and `authority` values to match your Azure tenant configuration:
-     ```typescript
-     export const APPNAME = "tools";
-     export const CLARITY = "your-clarity-key";
-     export const MSAL = {
-       clientId: "your-client-id",
-       authority: "https://login.microsoftonline.com/your-tenant-id",
-       redirectUri: "/",
-       postLogoutRedirectUri: "/",
-     };
-     ```
-
-### Continuous Integration and Deployment with GitHub Actions
-
-The KOKSMAT framework leverages GitHub Actions for continuous integration and deployment, specifically for publishing Docker images and deploying them to Kubernetes. This process is triggered whenever a new release is made.
-
-#### GitHub Actions for Publishing Docker Images
-
-1. **Configuration File**:
-
-   - The release tag and image name are controlled by the `.koksmat/koksmat.json` file:
-     ```json
-     {
-       "version": {
-         "minor": 0,
-         "build": 5,
-         "patch": 5,
-         "major": 0
-       },
-       "appname": "magic-people",
-       "dnsprod": "people.intra.nexigroup.com",
-       "dnstest": "people-test.intra.nexigroup.com",
-       "imagename": "ghcr.io/nexiintra-operations",
-       "port": 4444
-     }
-     ```
-
-2. **GitHub Actions Workflow**:
-
-   - The workflow is triggered on creating a new release, building the Docker image, and pushing it to the GitHub Container Registry:
-
-     ```yaml
-     name: Build and Publish Docker Image
-
-     on:
-       release:
-         types: [published]
-
-     jobs:
-       build:
-         runs-on: ubuntu-latest
-
-         steps:
-           - name: Checkout code
-             uses: actions/checkout@v2
-
-           - name: Set up Docker Buildx
-             uses: docker/setup-buildx-action@v1
-
-           - name: Login to GitHub Container Registry
-             uses: docker/login-action@v1
-             with:
-               registry: ghcr.io
-               username: ${{ github.actor }}
-               password: ${{ secrets.GITHUB_TOKEN }}
-
-           - name: Extract version
-             id: extract_version
-             run: |
-               version=$(jq -r '.version.major+"."+ .version.minor+"."+ .version.patch+"."+ .version.build' .koksmat/koksmat.json)
-               echo "::set-output name=version::$version"
-
-           - name: Build and push Docker image
-             run: |
-               imagename=$(jq -r '.imagename' .koksmat/koksmat.json)
-               version=${{ steps.extract_version.outputs.version }}
-               docker build -t $imagename:$version .
-               docker push $imagename:$version
-     ```
-
-#### Deploying to Kubernetes
-
-The deployment manifest is generated and published to Kubernetes using a PowerShell script located at `60-provision/10-web.ps1`.
-
-- **PowerShell Script**:
-
-  - This script reads the `koksmat.json` file, generates a Kubernetes manifest, and applies it:
-
-    ```powershell
-    <#---
-    title: Web deploy to production
-    tag: webdeployproduction
-    api: post
-    ---#>
-
-    if ((Split-Path -Leaf (Split-Path  -Parent -Path $PSScriptRoot)) -eq "sessions") {
-      $path = join-path $PSScriptRoot ".." ".."
-    }
-    else {
-      $path = join-path $PSScriptRoot ".." ".koksmat/"
-
-    }
-
-    $koksmatDir = Resolve-Path $path
-
-    $inputFile = join-path  $koksmatDir "koksmat.json"
-
-    if (!(Test-Path -Path $inputFile) ) {
-      Throw "Cannot find file at expected path: $inputFile"
-    }
-    $json = Get-Content -Path $inputFile | ConvertFrom-Json
-    $version = "v$($json.version.major).$($json.version.minor).$($json.version.patch).$($json.version.build)"
-    $port = "$($json.port)"
-    $appname = $json.appname
-    $imagename = $json.imagename
-    $dnsname = $json.dnsprod
-
-    $image = "$($imagename)-web:$($version)"
-
-    $config = @"
-    apiVersion: v1
-    kind: PersistentVolumeClaim
+```powershell
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-$appname
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: azurefile
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: $appname
+spec:
+  selector:
+    matchLabels:
+      app: $appname
+  replicas: 1
+  template:
     metadata:
-      name: pvc-$appname
-    spec:
-      accessModes:
-        - ReadWriteMany
-      resources:
-        requests:
-          storage: 1Gi
-      storageClassName: azurefile
-    ---
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: $appname
-    spec:
-      selector:
-        matchLabels:
-          app: $appname
-      replicas: 1
-      template:
-        metadata:
-          labels:
-            app: $appname
-        spec:
-          containers:
-          - name: $appname
-            image: $image
-            ports:
-              - containerPort: $port
-            env:
-            - name: NATS
-              value: nats://nats:4222
-            - name: DATAPATH
-              value: /data
-            volumeMounts:
-            - mountPath: /data
-              name: data
-          volumes:
-          - name: data
-            persistentVolumeClaim:
-              claimName: pvc-$appname
-    ---
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: $appname
       labels:
         app: $appname
-        service: $appname
     spec:
-      ports:
-      - name: http
-        port: 5301
-        targetPort: $port
-      selector:
-        app: $appname
-    ---
-    apiVersion: networking.k8s.io/v1
-    kind: Ingress
-    metadata:
-      name: $appname
-    spec:
-      rules:
-      - host: $dnsname
-        http:
-          paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: $appname
-                port:
-                  number: 5301
-    "@
+      containers:
+      - name: $appname
+        image: $image
+        ports:
+          - containerPort: $port
+        env:
+        - name: NATS
+          value: nats://nats:4222
+        - name: DATAPATH
+          value: /data
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: pvc-$appname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $appname
+  labels:
+    app: $appname
+    service: $appname
+spec:
+  ports:
+  - name: http
+    port: 5301
+    targetPort: $port
+  selector:
+    app: $appname
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: $appname
+spec:
+  rules:
+  - host: $dnsname
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: $appname
+            port:
+              number: 5301
+```
 
-    write-host "Applying config" -ForegroundColor Green
-    write-host $config -ForegroundColor Gray
-    $config |  kubectl apply -f -
-    ```
+This script ensures that the application is deployed with the necessary storage, deployment configuration, and accessible through the specified DNS.
