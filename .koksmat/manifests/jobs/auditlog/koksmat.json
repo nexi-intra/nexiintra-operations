@@ -1,0 +1,11 @@
+{
+  "version": {
+    "minor": 0,
+    "build": 5,
+    "patch": 5,
+    "major": 0
+  },
+  "appname": "magic-mix-app",
+  "imagename": "ghcr.io/magicbutton/magic-mix-app",
+  "port": 4444
+}
