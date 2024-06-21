@@ -1,13 +1,13 @@
 <#---
-title: Audit log process yesterday Cronjob
-tag: auditlogsprocessyesterday
+title: Sharepoint all sites
+tag: sharepoint-allsites
 api: post
 ---
 
 #>
 
 param (
-  [string]$jobName = "auditlog"
+  [string]$jobName = "sharepoint-allsites"
 )
 if ((Split-Path -Leaf (Split-Path  -Parent -Path $PSScriptRoot)) -eq "sessions") {
   $path = join-path $PSScriptRoot ".." ".."
@@ -29,7 +29,6 @@ $version = "v$($json.version.major).$($json.version.minor).$($json.version.patch
 $port = "$($json.port)"
 $appname = $json.appname
 $imagename = $json.imagename
-$dnsname = $json.dnsprod
 
 
 
@@ -81,7 +80,7 @@ kind: CronJob
 metadata:
   name: $jobName
 spec:
-  schedule: "0 3 * * *"
+  schedule: "0 45 * * *"
   jobTemplate:
     spec:
       template:
@@ -131,4 +130,4 @@ write-host "Applying config" -ForegroundColor Green
 
 write-host $config -ForegroundColor Gray
 
-$config |  kubectl apply -f -
+# $config |  kubectl apply -f -
