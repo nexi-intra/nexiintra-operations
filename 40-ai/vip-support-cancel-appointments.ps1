@@ -12,7 +12,8 @@ api: post
 
 
 param (
-  [string]$EmailAddress = "JEPPE.JUUL-ANDERSEN@NEXIGROUP.COM"
+  [string]$EmailAddress = "JEPPE.JUUL-ANDERSEN@NEXIGROUP.COM",
+  $message = "This appointment has been canceled due to the departure of the organizer."
   
 )
 
@@ -35,12 +36,36 @@ $appointments = Import-Csv -Path $csvFilePath
 
 Write-Host "Canceling appointments for $EmailAddress..."
 
-throw "https://chatgpt.com/c/67370189-3824-8007-ad88-27b8db14847b"
-
+$token = $env:GRAPH_ACCESSTOKEN 
+Write-Host "Canceling event for $EmailAddress..."
 foreach ($appointment in $appointments) {
   
-  Remove-CalendarEvent -Identity $appointment.id -Mailbox $EmailAddress -CancelMessage "This appointment has been canceled as the Jeppe Juul-Andersen is no longer with Nets."
-  Write-Host "Appointment canceled: $($appointment.subject)"
+  # API Endpoint to Cancel the Event
+  $Uri = "https://graph.microsoft.com/v1.0/users/$($EmailAddress)/events/$($appointment.id)/cancel"
+
+
+
+  # Headers
+  $Headers = @{
+    "Authorization" = "Bearer $($token)"
+    "Content-Type"  = "application/json"
+  }
+
+  # Request Body
+  $Body = @{
+    comment = $Comment
+  } | ConvertTo-Json -Depth 1
+
+  # Cancel the Event
+  try {
+    write-host "Canceling appointment: $($appointment.id)" -ForegroundColor Yellow -NoNewline
+    Invoke-RestMethod -Uri $Uri -Headers $Headers -Method Post -Body $Body
+    write-host " " -ForegroundColor Green
+  }
+  catch {
+    Write-host "Failed to cancel the event: $_" -ForegroundColor Red
+  }
+  
   
     
   
